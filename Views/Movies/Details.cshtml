@@ -2,21 +2,26 @@
 
 <h1>Szczegóły filmu</h1>
 
-<hr />
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="card-title mb-4">@Model.Tytul</h4>
 
-<h2>@Model.Tytul</h2>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <strong>Czas trwania:</strong> @Model.Dlugosc minut
+            </li>
+            <li class="list-group-item">
+                <strong>Reżyser:</strong> @Model.Rezyser
+            </li>
+        </ul>
 
-<p>
-    <strong>Reżyser:</strong> @Model.Rezyser
-</p>
-
-<p>
-    <strong>Czas trwania:</strong> @Model.Dlugosc min.
-</p>
-
-<hr />
-
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a> |
-    <a asp-action="Index">Powrót do listy</a>
-</p>
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                Edytuj
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                Wróć do listy
+            </a>
+        </div>
+    </div>
+</div>

@@ -128,3 +128,4 @@ C:\Users\patry\Desktop\MvcAppMovies\bin\Debug\net8.0\runtimes\win-x86\native\e_s
 C:\Users\patry\Desktop\MvcAppMovies\obj\Debug\net8.0\MvcAppMovies.csproj.AssemblyReference.cache
 C:\Users\patry\Desktop\MvcAppMovies\obj\Debug\net8.0\MvcAppMo.0FE0B274.Up2Date
 C:\Users\patry\Desktop\MvcAppMovies\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\patry\Desktop\MvcAppMovies\obj\Debug\net8.0\MvcAppMovies.sourcelink.json

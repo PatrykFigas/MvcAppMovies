@@ -3,21 +3,21 @@
 <h1>Dodaj film</h1>
 
 <form asp-action="Add" method="post">
-    <div>
-        <label asp-for="Tytul"></label><br />
-        <input asp-for="Tytul" />
-        <span asp-validation-for="Tytul"></span>
+    <div class="mb-3">
+        <label asp-for="Tytul" class="form-label">Tytuł</label>
+        <input asp-for="Tytul" class="form-control" />
     </div>
 
-    <div>
-        <label asp-for="Dlugosc"></label><br />
-        <input asp-for="Dlugosc" type="number" />
+    <div class="mb-3">
+        <label asp-for="Dlugosc" class="form-label">Czas (min)</label>
+        <input asp-for="Dlugosc" class="form-control" />
     </div>
 
-    <div>
-        <label asp-for="Rezyser"></label><br />
-        <input asp-for="Rezyser" />
+    <div class="mb-3">
+        <label asp-for="Rezyser" class="form-label">Reżyser</label>
+        <input asp-for="Rezyser" class="form-control" />
     </div>
 
-    <button type="submit">Zapisz</button>
+    <button type="submit" class="btn btn-success">Zapisz</button>
+    <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
 </form>

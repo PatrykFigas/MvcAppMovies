@@ -1,50 +1,91 @@
-﻿@*
-    Widok prezentujący listę filmów zapisanych w bazie danych.
-    Umożliwia przejście do szczegółów, edycji oraz usuwania filmu.
-*@
-@model List<MvcAppMovies.Models.Movie>
+﻿@model List<MvcAppMovies.Models.Movie>
 
 <h1>Lista filmów</h1>
 
-<p>
-    <a asp-action="Add" class="btn btn-primary">Dodaj nowy film</a>
-</p>
+<a asp-action="Add" class="btn btn-add-movie mb-4">
+    + Dodaj nowy film
+</a>
 
 @{
-    int lp = 1; 
+    int lp = 1;
 }
 
-<table class="table">
-    <tbody>
-
-        
-        <tr style="font-weight:bold; color:#555; background:#f2f2f2;">
-            <td>Lp.</td>
-            <td>Tytuł</td>
-            <td style="text-align:center;">Czas (min)</td>
-            <td>Reżyser</td>
-            <td>Akcje</td>
-        </tr>
-
-        @foreach (var movie in Model)
-        {
+<div class="table-wrap p-3">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
             <tr>
-                <td>@lp</td>
-                <td>@movie.Tytul</td>
-                <td style="text-align:center;">@movie.Dlugosc</td>
-                <td>@movie.Rezyser</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@movie.Id">Szczegóły</a> |
-                    <a asp-action="Edit" asp-route-id="@movie.Id">Edytuj</a> |
-                    <a asp-action="Delete"
-                       asp-route-id="@movie.Id"
-                       onclick="return confirm('Na pewno usunąć ten film?');">
-                        Usuń
-                    </a>
-                </td>
+                <th class="text-center">Lp.</th>
+                <th>Tytuł</th>
+                <th class="text-center">Czas (min)</th>
+                <th>Reżyser</th>
+                <th class="text-center">Akcje</th>
             </tr>
+        </thead>
 
-            lp++;
-        }
-    </tbody>
-</table>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@lp</td>
+                    <td>@movie.Tytul</td>
+                    <td>@movie.Dlugosc</td>
+                    <td>@movie.Rezyser</td>
+                    <td class="text-nowrap">
+                        <a class="btn btn-sm btn-outline-info"
+                           asp-action="Details" asp-route-id="@movie.Id">
+                            Szczegóły
+                        </a>
+                        <a class="btn btn-sm btn-outline-warning"
+                           asp-action="Edit" asp-route-id="@movie.Id">
+                            Edytuj
+                        </a>
+
+                        <button class="btn btn-sm btn-outline-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-id="@movie.Id">
+                            Usuń
+                        </button>
+                    </td>
+                </tr>
+                lp++;
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal potwierdzenia usunięcia -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Potwierdzenie usunięcia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Czy na pewno chcesz usunąć ten film?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Anuluj
+                </button>
+                <a id="confirmDeleteBtn" class="btn btn-danger">
+                    Usuń
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const movieId = button.getAttribute('data-id');
+        document.getElementById('confirmDeleteBtn').href = '/Movies/Delete/' + movieId;
+    });
+</script>
