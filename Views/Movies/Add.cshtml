@@ -1,0 +1,23 @@
+﻿@model MvcAppMovies.Models.Movie
+
+<h1>Dodaj film</h1>
+
+<form asp-action="Add" method="post">
+    <div>
+        <label asp-for="Tytul"></label><br />
+        <input asp-for="Tytul" />
+        <span asp-validation-for="Tytul"></span>
+    </div>
+
+    <div>
+        <label asp-for="Dlugosc"></label><br />
+        <input asp-for="Dlugosc" type="number" />
+    </div>
+
+    <div>
+        <label asp-for="Rezyser"></label><br />
+        <input asp-for="Rezyser" />
+    </div>
+
+    <button type="submit">Zapisz</button>
+</form>

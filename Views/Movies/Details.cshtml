@@ -1,0 +1,22 @@
+﻿@model MvcAppMovies.Models.Movie
+
+<h1>Szczegóły filmu</h1>
+
+<hr />
+
+<h2>@Model.Tytul</h2>
+
+<p>
+    <strong>Reżyser:</strong> @Model.Rezyser
+</p>
+
+<p>
+    <strong>Czas trwania:</strong> @Model.Dlugosc min.
+</p>
+
+<hr />
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a> |
+    <a asp-action="Index">Powrót do listy</a>
+</p>

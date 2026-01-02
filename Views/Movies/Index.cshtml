@@ -1,0 +1,50 @@
+﻿@*
+    Widok prezentujący listę filmów zapisanych w bazie danych.
+    Umożliwia przejście do szczegółów, edycji oraz usuwania filmu.
+*@
+@model List<MvcAppMovies.Models.Movie>
+
+<h1>Lista filmów</h1>
+
+<p>
+    <a asp-action="Add" class="btn btn-primary">Dodaj nowy film</a>
+</p>
+
+@{
+    int lp = 1; 
+}
+
+<table class="table">
+    <tbody>
+
+        
+        <tr style="font-weight:bold; color:#555; background:#f2f2f2;">
+            <td>Lp.</td>
+            <td>Tytuł</td>
+            <td style="text-align:center;">Czas (min)</td>
+            <td>Reżyser</td>
+            <td>Akcje</td>
+        </tr>
+
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>@lp</td>
+                <td>@movie.Tytul</td>
+                <td style="text-align:center;">@movie.Dlugosc</td>
+                <td>@movie.Rezyser</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@movie.Id">Szczegóły</a> |
+                    <a asp-action="Edit" asp-route-id="@movie.Id">Edytuj</a> |
+                    <a asp-action="Delete"
+                       asp-route-id="@movie.Id"
+                       onclick="return confirm('Na pewno usunąć ten film?');">
+                        Usuń
+                    </a>
+                </td>
+            </tr>
+
+            lp++;
+        }
+    </tbody>
+</table>
