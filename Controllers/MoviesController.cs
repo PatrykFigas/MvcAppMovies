@@ -30,10 +30,15 @@ namespace MvcAppMovies.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Movie movie)
         {
-            if (!ModelState.IsValid) return View(movie);
+            if (!ModelState.IsValid) 
+                return View(movie);
 
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
+
+            // Komunikat po poprawnym zapisaniu filmu
+            TempData["Success"] = "Film zostal dodany.";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -54,6 +59,10 @@ namespace MvcAppMovies.Controllers
 
             _context.Movies.Update(movie);
             await _context.SaveChangesAsync();
+
+            // Komunikat po poprawnej edycji filmu
+            TempData["Success"] = "Zmiany zostaly zapisane.";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -65,6 +74,10 @@ namespace MvcAppMovies.Controllers
 
             _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
+
+            // Komunikat po usunięciu filmu
+            TempData["Success"] = "Film zostal usuniety z listy.";
+
             return RedirectToAction(nameof(Index));
         }
 

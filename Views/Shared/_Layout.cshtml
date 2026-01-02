@@ -46,6 +46,13 @@
         <section class="card shadow-sm border-0 app-shell">
             <div class="card-body p-4">
 
+                @if (TempData["Success"] != null)
+                {
+                    <script>
+                        alert('@TempData["Success"]');
+                    </script>
+                }
+
                 <!--
                     W tym miejscu renderowana jest zawartość
                     aktualnego widoku (Index, Add, Edit, Details).
