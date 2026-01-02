@@ -1,26 +1,36 @@
 :root {
-    --bg: #0b1220; /* t³o strony */
-    --panel: #0f172a; /* panel/karta */
-    --panel2: #111c33; /* lekko jaœniej */
+    --bg: #0b1220; /* t³o ca³ej strony */
+    --panel: #0f172a; /* t³o kart i paneli */
+    --panel2: #111c33; /* jaœniejszy wariant panelu */
     --border: #22314d; /* obramowania */
-    --text: #e5e7eb; /* jasny tekst */
+    --text: #e5e7eb; /* g³ówny kolor tekstu */
     --muted: #a7b0c0; /* tekst pomocniczy */
-    --accent: #3b82f6; /* akcent */
-    --danger: #ef4444;
-    --warn: #f59e0b;
-    --success: #22c55e;
+
+    --accent: #3b82f6; /* kolor akcentu (niebieski) */
+    --danger: #ef4444; /* czerwony – usuwanie */
+    --warn: #f59e0b; /* pomarañczowy – edycja */
+    --success: #22c55e; /* zielony – zapisywanie */
 }
 
+/* USTAWIENIA GLOBALNE */
 body {
     background: var(--bg) !important;
     color: var(--text) !important;
+}
+
+/* Nag³ówki stron */
+.page-title,
+h1 {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 18px;
 }
 
 /* NAVBAR */
 .navbar {
     background: rgba(15, 23, 42, 0.85) !important;
     border-bottom: 1px solid var(--border) !important;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); /* delikatny efekt „szk³a” */
 }
 
 .navbar-brand {
@@ -28,64 +38,104 @@ body {
     font-weight: 700;
 }
 
-/* KARTA */
-.card {
+/* G£ÓWNA KARTA */
+.app-shell {
     background: var(--panel) !important;
     border: 1px solid var(--border) !important;
     border-radius: 16px;
 }
 
-h1 {
-    color: #fff;
-    font-weight: 700;
-    margin-bottom: 18px;
-}
-
-/* TABLE WRAP */
+/* TABELA – OPAKOWANIE */
 .table-wrap {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border);
     border-radius: 14px;
+    overflow: hidden; /* hover nie wychodzi poza zaokr¹glenia */
 }
 
-/* TABELA */
+/* TABELA – PODSTAWY */
 .table {
     background: transparent !important;
     color: var(--text) !important;
+    margin-bottom: 0 !important;
 }
 
-    .table thead th {
-        background: rgba(34, 49, 77, 0.6) !important;
-        color: #fff !important;
-        border-bottom: 1px solid var(--border) !important;
-        font-weight: 700;
-    }
+/* 
+   table-layout: fixed + colgroup
+   zapewnia idealne wyrównanie kolumn
+*/
+.movies-table {
+    table-layout: fixed;
+}
 
-    .table tbody td {
-        border-top: 1px solid rgba(34, 49, 77, 0.6) !important;
-    }
+/* Nag³ówki tabeli */
+.table thead th {
+    background: rgba(34, 49, 77, 0.6) !important;
+    color: #fff !important;
+    border-bottom: 1px solid var(--border) !important;
+    font-weight: 700;
+}
 
+/* Linie oddzielaj¹ce wiersze */
+.table tbody td {
+    border-top: 1px solid rgba(34, 49, 77, 0.6) !important;
+}
+
+/* HOVER WIERSZA – BEZ „ZNIKANIA” */
 .table-hover tbody tr:hover {
-    background: rgba(59, 130, 246, 0.18) !important;
+    background: rgba(59, 130, 246, 0.14) !important;
 }
-    .table-hover tbody tr:hover td {
+
+    /* Wymuszenie stabilnego hovera */
+    .table-hover tbody tr:hover > * {
+        background: transparent !important;
         color: #ffffff !important;
     }
 
-/* BUTTONS */
-.btn {
-    border-radius: 10px;
+/* WYRÓWNANIA TABELI */
+.movies-table th,
+.movies-table td {
+    vertical-align: middle !important;
 }
 
-.btn-primary {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-    .btn-primary:hover {
-        filter: brightness(0.95);
+    /* Kolumna akcji zawsze wyœrodkowana */
+    .movies-table th:last-child,
+    .movies-table td:last-child {
+        text-align: center !important;
     }
 
+    /* Tytu³ i Re¿yser – identyczne wyrównanie */
+    .movies-table th.col-title,
+    .movies-table td.col-title,
+    .movies-table th.col-director,
+    .movies-table td.col-director {
+        text-align: left !important;
+        padding-left: 18px !important;
+    }
+
+    /* D³ugie teksty ³adnie siê ³ami¹ */
+    .movies-table td.col-title,
+    .movies-table td.col-director {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+/* PRZYCISKI */
+.btn {
+    border-radius: 10px;
+    transition: transform 0.15s, filter 0.15s, box-shadow 0.15s;
+}
+
+    /* Delikatne „uniesienie” przy hoverze */
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+/* Przycisk drugorzêdny */
 .btn-secondary {
     background: rgba(167, 176, 192, 0.12);
     border-color: rgba(167, 176, 192, 0.25);
@@ -97,6 +147,13 @@ h1 {
         color: var(--text);
     }
 
+/* Zapis (zielony) */
+.btn-success {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+/* Szczegó³y */
 .btn-outline-info {
     color: var(--accent);
     border-color: rgba(59, 130, 246, 0.6);
@@ -107,6 +164,7 @@ h1 {
         color: #fff;
     }
 
+/* Edycja */
 .btn-outline-warning {
     color: var(--warn);
     border-color: rgba(245, 158, 11, 0.65);
@@ -117,6 +175,7 @@ h1 {
         color: #fff;
     }
 
+/* Usuwanie */
 .btn-outline-danger {
     color: var(--danger);
     border-color: rgba(239, 68, 68, 0.65);
@@ -127,66 +186,7 @@ h1 {
         color: #fff;
     }
 
-.btn-success {
-    background: var(--success);
-    border-color: var(--success);
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-    transition: 0.15s;
-}
-
-.text-nowrap {
-    white-space: nowrap;
-}
-
-/* FORMULARZE */
-.form-label {
-    color: var(--muted) !important;
-}
-
-.form-control {
-    background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text) !important;
-    border-radius: 10px;
-}
-
-    .form-control:focus {
-        border-color: rgba(59, 130, 246, 0.7) !important;
-        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15) !important;
-    }
-
-/* DETAILS LIST */
-.list-group-item {
-    background: transparent !important;
-    color: var(--text) !important;
-    border-color: rgba(34, 49, 77, 0.6) !important;
-}
-
-/* MODAL */
-.modal-content {
-    background: var(--panel) !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text) !important;
-    border-radius: 16px;
-}
-
-.modal-header, .modal-footer {
-    border-color: var(--border) !important;
-}
-
-.btn-close {
-    filter: invert(1);
-}
-
-/* FOOTER */
-footer {
-    background: rgba(15, 23, 42, 0.65);
-    border-top: 1px solid var(--border);
-    color: var(--muted) !important;
-}
+/* G³ówny przycisk CTA */
 .btn-add-movie {
     background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: #ffffff !important;
@@ -202,3 +202,74 @@ footer {
         box-shadow: 0 12px 28px rgba(59, 130, 246, 0.45);
         filter: brightness(1.05);
     }
+
+/* FORMULARZE */
+.form-label {
+    color: var(--muted) !important;
+}
+
+/* Pola input */
+.form-control {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 10px;
+}
+
+    /* Fokus – podœwietlenie aktywnego pola */
+    .form-control:focus {
+        border-color: rgba(59, 130, 246, 0.7) !important;
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15) !important;
+    }
+
+/* Ograniczenie szerokoœci formularzy */
+.form-panel {
+    max-width: 640px;
+}
+
+/* DETAILS (SZCZEGÓ£Y FILMU) */
+.details-panel {
+    max-width: 720px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.details-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Listy Bootstrap w trybie dark */
+.list-group-item {
+    background: transparent !important;
+    color: var(--text) !important;
+    border-color: rgba(34, 49, 77, 0.6) !important;
+}
+
+/* MODAL */
+.modal-content {
+    background: var(--panel) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 16px;
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--border) !important;
+}
+
+/* Jasny krzy¿yk w dark theme */
+.btn-close {
+    filter: invert(1);
+}
+
+/* STOPKA */
+footer {
+    background: rgba(15, 23, 42, 0.65);
+    border-top: 1px solid var(--border);
+    color: var(--muted) !important;
+}

@@ -1,25 +1,89 @@
 ﻿@model MvcAppMovies.Models.Movie
 
-<h1>Edytuj film</h1>
+@{
+    // Tytuł strony – używany w <title> w pliku _Layout.cshtml
+    ViewData["Title"] = "Edytuj film";
+}
 
-<form asp-action="Edit" method="post">
+<!-- Nagłówek strony -->
+<h1 class="page-title">Edytuj film</h1>
+
+<!--
+    Formularz edycji filmu.
+    Po wysłaniu dane trafiają do akcji Edit (POST) w MoviesController.
+-->
+<form asp-action="Edit" method="post" class="form-panel">
+
+    <!--
+        Token zabezpieczający przed atakami CSRF.
+        Standardowa praktyka w aplikacjach ASP.NET MVC.
+    -->
+    @Html.AntiForgeryToken()
+
+    <!--
+        Ukryte pole z Id filmu.
+        Jest wymagane, aby aplikacja wiedziała,
+        który rekord w bazie danych ma zostać zaktualizowany.
+    -->
     <input type="hidden" asp-for="Id" />
 
+    <!--
+        Podsumowanie błędów walidacji modelu.
+        Pojawi się, jeśli dane nie spełnią wymagań.
+    -->
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <!-- Pole: Tytuł filmu -->
     <div class="mb-3">
         <label asp-for="Tytul" class="form-label">Tytuł</label>
-        <input asp-for="Tytul" class="form-control" />
+        <input asp-for="Tytul"
+               class="form-control"
+               autocomplete="off" />
+        <span asp-validation-for="Tytul" class="text-danger"></span>
     </div>
 
+    <!-- Pole: Czas trwania filmu -->
     <div class="mb-3">
         <label asp-for="Dlugosc" class="form-label">Czas (min)</label>
-        <input asp-for="Dlugosc" class="form-control" />
+
+        <!--
+            type="number" oraz min="1"
+            zapewniają podstawową walidację po stronie przeglądarki.
+        -->
+        <input asp-for="Dlugosc"
+               type="number"
+               min="1"
+               class="form-control" />
+        <span asp-validation-for="Dlugosc" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <!-- Pole: Reżyser -->
+    <div class="mb-4">
         <label asp-for="Rezyser" class="form-label">Reżyser</label>
-        <input asp-for="Rezyser" class="form-control" />
+        <input asp-for="Rezyser"
+               class="form-control"
+               autocomplete="off" />
+        <span asp-validation-for="Rezyser" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Zapisz zmiany</button>
-    <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    <!-- Przyciski akcji -->
+    <div class="d-flex flex-wrap gap-2">
+        <!-- Zapis zmian -->
+        <button type="submit" class="btn btn-success">
+            Zapisz zmiany
+        </button>
+
+        <!-- Anulowanie edycji i powrót do listy -->
+        <a asp-action="Index" class="btn btn-secondary">
+            Anuluj
+        </a>
+    </div>
 </form>
+
+@section Scripts {
+    <!--
+        Skrypty odpowiedzialne za walidację po stronie klienta
+        (np. wymagane pola, zakres liczb).
+    -->
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,27 +1,54 @@
 ﻿@model MvcAppMovies.Models.Movie
 
-<h1>Szczegóły filmu</h1>
+@{
+    // Tytuł strony – używany w <title> w pliku _Layout.cshtml
+    ViewData["Title"] = "Szczegóły filmu";
+}
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <h4 class="card-title mb-4">@Model.Tytul</h4>
+<!--
+    Górny pasek widoku:
+    - tytuł strony po lewej
+    - przyciski akcji po prawej
+-->
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+    <h1 class="page-title m-0">Szczegóły filmu</h1>
 
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <strong>Czas trwania:</strong> @Model.Dlugosc minut
-            </li>
-            <li class="list-group-item">
-                <strong>Reżyser:</strong> @Model.Rezyser
-            </li>
-        </ul>
+    <!-- Przyciski nawigacyjne -->
+    <div class="d-flex flex-wrap gap-2">
 
-        <div class="mt-4">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
-                Edytuj
-            </a>
-            <a asp-action="Index" class="btn btn-secondary">
-                Wróć do listy
-            </a>
-        </div>
+        <!-- Przejście do edycji aktualnego filmu -->
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">
+            Edytuj
+        </a>
+        
+        <!-- Powrót do listy filmów -->
+        <a asp-action="Index" class="btn btn-secondary">
+            Wróć do listy
+        </a>
     </div>
+</div>
+
+<!--
+    Panel ze szczegółami filmu.
+    details-panel to własna klasa CSS odpowiadająca za wygląd (ciemne tło, obramowanie).
+-->
+<div class="details-panel">
+
+    <!-- Tytuł filmu -->
+    <div class="details-title">@Model.Tytul</div>
+
+    <!--
+        Lista szczegółów filmu.
+        Używamy list-group Bootstrap, żeby zachować równe odstępy i czytelny układ.
+    -->
+    <ul class="list-group list-group-flush mt-3">
+        <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Czas trwania</span>
+            <span><strong>@Model.Dlugosc</strong> min</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Reżyser</span>
+            <span><strong>@Model.Rezyser</strong></span>
+        </li>
+    </ul>
 </div>

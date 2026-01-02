@@ -1,38 +1,78 @@
 ﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
+    <!-- Kodowanie znaków -->
     <meta charset="utf-8" />
+
+    <!-- Responsywność – poprawne skalowanie na telefonach i tabletach -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Tytuł strony ustawiany dynamicznie w widokach -->
     <title>@ViewData["Title"] - MvcAppMovies</title>
 
+    <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Podłączenie pliku CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
 
+    <!--
+        Nagłówek aplikacji.
+        Zawiera pasek nawigacyjny widoczny na każdej stronie.
+    -->
     <header>
         <nav class="navbar navbar-expand-sm navbar-dark mb-4">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Movies" asp-action="Index">MvcAppMovies</a>
+
+                <!-- Logo / nazwa aplikacji – kliknięcie wraca do listy filmów -->
+                <a class="navbar-brand"
+                   asp-controller="Movies"
+                   asp-action="Index">
+                    MvcAppMovies
+                </a>
+
             </div>
         </nav>
     </header>
 
+    <!--
+        Główna część strony.
+        container zapewnia czytelne marginesy,
+        a karta (app-shell) nadaje wygląd wszystkim widokom.
+    -->
     <main class="container my-4">
-        <section class="card shadow-sm border-0">
+        <section class="card shadow-sm border-0 app-shell">
             <div class="card-body p-4">
+
+                <!--
+                    W tym miejscu renderowana jest zawartość
+                    aktualnego widoku (Index, Add, Edit, Details).
+                -->
                 @RenderBody()
+
             </div>
         </section>
     </main>
 
+    <!--
+        Stopka aplikacji.
+        Wyświetlana na każdej stronie.
+    -->
     <footer class="border-top mt-5">
         <div class="container text-center py-3">
             &copy; 2025 - MvcAppMovies
         </div>
     </footer>
 
+    <!-- Bootstrap JS – obsługa modali, dropdownów itd. -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--
+        Miejsce na dodatkowe skrypty z poszczególnych widoków
+        (np. obsługa modala usuwania w Index.cshtml).
+    -->
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

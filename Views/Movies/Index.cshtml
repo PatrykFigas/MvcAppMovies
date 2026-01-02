@@ -1,77 +1,158 @@
 ﻿@model List<MvcAppMovies.Models.Movie>
 
-<h1>Lista filmów</h1>
-
-<a asp-action="Add" class="btn btn-add-movie mb-4">
-    + Dodaj nowy film
-</a>
-
 @{
-    int lp = 1;
+    // Tytuł strony – używany w <title> w pliku _Layout.cshtml
+    ViewData["Title"] = "Lista filmów";
+
+    // Licznik do kolumny "Lp." (numeracja wierszy tabeli)
+    var lp = 1;
 }
 
+<!--
+    Górny pasek strony:
+    - tytuł widoku
+    - przycisk dodawania nowego filmu
+-->
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+    <h1 class="page-title m-0">Lista filmów</h1>
+
+    <!-- Przycisk przejścia do formularza dodawania filmu -->
+    <a asp-action="Add" class="btn btn-add-movie">
+        + Dodaj nowy film
+    </a>
+</div>
+
+<!--
+    Wrapper tabeli:
+    odpowiada za tło, obramowanie i zaokrąglenia
+    (styl zdefiniowany w site.css)
+-->
 <div class="table-wrap p-3">
-    <table class="table table-hover align-middle mb-0">
+    <table class="table table-hover align-middle mb-0 movies-table">
+
+        <!--
+            colgroup ustala stałe szerokości kolumn,
+            dzięki czemu nagłówki i dane są idealnie wyrównane.
+        -->
+        <colgroup>
+            <col style="width:70px;" />
+            <col style="width:420px;" />
+            <col style="width:120px;" />
+            <col style="width:260px;" />
+            <col style="width:220px;" />
+        </colgroup>
+
+        <!-- Nagłówki tabeli -->
         <thead>
             <tr>
                 <th class="text-center">Lp.</th>
-                <th>Tytuł</th>
+                <th class="col-title">Tytuł</th>
                 <th class="text-center">Czas (min)</th>
-                <th>Reżyser</th>
+                <th class="col-director">Reżyser</th>
                 <th class="text-center">Akcje</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach (var movie in Model)
+            @* Informacja, gdy lista filmów jest pusta *@
+            @if (Model == null || Model.Count == 0)
             {
                 <tr>
-                    <td>@lp</td>
-                    <td>@movie.Tytul</td>
-                    <td>@movie.Dlugosc</td>
-                    <td>@movie.Rezyser</td>
-                    <td class="text-nowrap">
-                        <a class="btn btn-sm btn-outline-info"
-                           asp-action="Details" asp-route-id="@movie.Id">
-                            Szczegóły
-                        </a>
-                        <a class="btn btn-sm btn-outline-warning"
-                           asp-action="Edit" asp-route-id="@movie.Id">
-                            Edytuj
-                        </a>
-
-                        <button class="btn btn-sm btn-outline-danger"
-                                data-bs-toggle="modal"
-                                data-bs-target="#deleteModal"
-                                data-id="@movie.Id">
-                            Usuń
-                        </button>
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        Brak filmów w bazie. Dodaj pierwszy film przyciskiem powyżej.
                     </td>
                 </tr>
-                lp++;
+            }
+            else
+            {
+                @* Generowanie jednego wiersza tabeli dla każdego filmu *@
+                @foreach (var movie in Model)
+                {
+                    <tr>
+                        <!-- Numer porządkowy -->
+                        <td class="text-center">@lp</td>
+
+                        <!-- Tytuł filmu -->
+                        <td class="col-title">@movie.Tytul</td>
+
+                        <!-- Długość filmu w minutach -->
+                        <td class="text-center">@movie.Dlugosc</td>
+
+                        <!-- Reżyser -->
+                        <td class="col-director">@movie.Rezyser</td>
+
+                        <!-- Akcje CRUD -->
+                        <td class="text-center text-nowrap">
+                            <!-- Szczegóły filmu -->
+                            <a class="btn btn-sm btn-outline-info"
+                               asp-action="Details"
+                               asp-route-id="@movie.Id">
+                                Szczegóły
+                            </a>
+
+                            <!-- Edycja filmu -->
+                            <a class="btn btn-sm btn-outline-warning"
+                               asp-action="Edit"
+                               asp-route-id="@movie.Id">
+                                Edytuj
+                            </a>
+
+                            <!--
+                                Usuwanie filmu:
+                                zamiast bezpośredniego usunięcia
+                                otwierany jest modal z potwierdzeniem
+                            -->
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"
+                                    data-id="@movie.Id"
+                                    data-title="@movie.Tytul">
+                                Usuń
+                            </button>
+                        </td>
+                    </tr>
+
+                    lp++;
+                }
             }
         </tbody>
     </table>
 </div>
 
-<!-- Modal potwierdzenia usunięcia -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
+<!--
+    Modal Bootstrap do potwierdzenia usunięcia filmu.
+    Chroni przed przypadkowym kliknięciem "Usuń".
+-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
                 <h5 class="modal-title">Potwierdzenie usunięcia</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Zamknij"></button>
             </div>
 
             <div class="modal-body">
-                Czy na pewno chcesz usunąć ten film?
+                <div class="mb-2">
+                    Czy na pewno chcesz usunąć ten film?
+                </div>
+
+                <!-- Tutaj wyświetlany jest tytuł filmu -->
+                <div class="text-muted small" id="deleteMovieTitle"></div>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
                     Anuluj
                 </button>
+
+                <!-- Link do akcji Delete ustawiany dynamicznie w JS -->
                 <a id="confirmDeleteBtn" class="btn btn-danger">
                     Usuń
                 </a>
@@ -81,11 +162,33 @@
     </div>
 </div>
 
-<script>
-    const deleteModal = document.getElementById('deleteModal');
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const movieId = button.getAttribute('data-id');
-        document.getElementById('confirmDeleteBtn').href = '/Movies/Delete/' + movieId;
-    });
-</script>
+@section Scripts {
+    <script>
+        // Funkcja samowywołująca – porządek w kodzie JS
+        (function () {
+            const deleteModal = document.getElementById('deleteModal');
+            if (!deleteModal) return;
+
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            const titleEl = document.getElementById('deleteMovieTitle');
+
+            // Wykonuje się w momencie otwarcia modala
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                // Pobranie danych filmu z atrybutów data-*
+                const movieId = button.getAttribute('data-id');
+                const movieTitle = button.getAttribute('data-title') || '';
+
+                // Generowanie poprawnego linku do akcji Delete w kontrolerze
+                const baseUrl = '@Url.Action("Delete", "Movies", new { id = "__id__" })';
+                confirmBtn.href = baseUrl.replace('__id__', movieId);
+
+                // Wyświetlenie tytułu filmu w modalu
+                titleEl.textContent = movieTitle
+                    ? `Tytuł: ${movieTitle}`
+                    : '';
+            });
+        })();
+    </script>
+}
